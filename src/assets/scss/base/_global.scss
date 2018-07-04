@@ -1,0 +1,63 @@
+html,
+body {
+    min-height: 100%; // height:100%;
+    background-color: #fafafa;
+    font-size: $font-size-base;
+    @include letter-spacing(40);
+    
+}
+
+.page-content {}
+
+body {
+    overflow-x:hidden;
+    &.modal-open {
+        transform: none;
+        min-height: 1px;
+        height: auto;
+    }
+}
+
+
+
+//  sticky footer
+#app {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    #content {
+        flex: 1 0 auto;
+    }
+
+    #footer,
+    #header {
+        flex-shrink: 0;
+    }
+}
+
+.list-columns {
+    
+    padding:0px;
+    list-style: none;
+     @include media-breakpoint-up(sm) {
+        column-count:2;
+     }
+
+    >li {
+        @include spacer(padding, y, rem(10));
+    }
+}
+
+p {
+    @include line-height(16, 30); 
+}
+
+
+    .mb-max-lg {
+        margin-bottom: rem(30);
+
+        @include media-breakpoint-up(lg) {
+        margin-bottom: rem(0);
+    }
+    }

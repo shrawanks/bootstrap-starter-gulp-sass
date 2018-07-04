@@ -1,0 +1,38 @@
+ // px to rem            =
+ 
+  $baseFontSize : 16px ;
+  
+  @function rem($pixels, $context: $baseFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1rem;
+}
+
+
+ 
+//  .class{
+//  font-size:rem(16);
+// }
+ 
+
+ // px to em         
+
+@function em($pixels, $context: $baseFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1em;
+}
+
+

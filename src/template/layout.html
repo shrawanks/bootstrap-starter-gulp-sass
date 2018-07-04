@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./assets/css/app.css">
+    
+    {% block css %} {% endblock %}
+    <title>{% block title %} {% endblock %}</title>
+</head>
+
+<body>
+   
+    <div id="app">   
+       
+         {% include "template/partials/_header.html" %}
+        <div id="content">
+          <main class="page-content">
+        
+            <!-- You write code for this content block in another file -->
+            {% block content %} {% endblock %}
+          
+          </main>
+        </div>
+       {% include "template/partials/_footer.html" %}
+    </div> 
+
+       <!--build:js ./assets/js/app.min.js -->
+        
+           
+
+            <!-- endbuild -->
+            {% block footer %} {% endblock %}
+
+</body>
+
+</html>
