@@ -13,7 +13,8 @@
     "bootstrap": "^4.1.1",
     "drop-shadow-converter": "^2.0.0",
     "jquery": "^3.3.1",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "wowjs": "^1.1.3"
   },
   "devDependencies": {
     "browser-sync": "^2.24.4",
@@ -22,10 +23,13 @@
     "gulp-autoprefixer": "^5.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^3.9.4",
+    "gulp-clone": "^2.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.3",
+    "gulp-environments": "^0.1.2",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^4.1.0",
+    "gulp-inject-partials": "^1.0.4",
     "gulp-load-plugins": "^1.5.0",
     "gulp-newer": "^1.4.0",
     "gulp-notify": "^3.2.0",
@@ -37,12 +41,14 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-useref": "^3.1.5",
+    "gulp-version-number": "^0.1.7",
     "gulp-watch": "^5.0.0",
     "imagemin-giflossy": "^5.1.10",
     "imagemin-jpegtran": "^5.0.2",
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-pngquant": "^5.1.0",
     "imagemin-zopfli": "^5.1.0",
+    "js-yaml": "^3.11.0",
     "path": "^0.12.7",
     "run-sequence": "^2.2.1"
   }

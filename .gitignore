@@ -1,5 +1,4 @@
 node_modules/
-src/assets/js/ 
 src/assets/images/
 dist/
 package-lock.json

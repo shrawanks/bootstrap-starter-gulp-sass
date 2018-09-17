@@ -10,6 +10,8 @@ var imageminMozjpeg = require('imagemin-mozjpeg'); //need to run 'brew install l
 var imageminGiflossy = require('imagemin-giflossy');
 var path = require('path');
 var config = require('./gulp.config');
+
+ 
 // console.log(config.node.css)
 
 reload = browserSync.reload;
@@ -42,6 +44,8 @@ gulp.task('clean:img', function() {
     return del.sync([config.dist.img]);
 });
 
+ 
+
 //font copy task 
 gulp.task('copyfont', function() {
     return gulp.src(config.node.fonts + '*.*')
@@ -61,6 +65,15 @@ gulp.task('copyjs', function() {
         .pipe(plugins.plumber({ errorHandler: plugins.notify.onError("Error: <%= error.message %>") }))
         .pipe(gulp.dest(config.src.js + 'vendor/'))
 });
+
+//js copy task 
+gulp.task('js', function() {
+    return gulp.src(config.node.js)
+        .pipe(plugins.plumber({ errorHandler: plugins.notify.onError("Error: <%= error.message %>") }))
+        .pipe(plugins.concat('app.js'))
+        .pipe(gulp.dest(config.dist.js))
+});
+
 //sass task
 gulp.task('scss', function() {
     // console.log('hello');
@@ -69,14 +82,14 @@ gulp.task('scss', function() {
         .pipe(plugins.sourcemaps.init())
         .pipe(plugins.sass({
             includePaths: config.node.css,
-            outputStyle: 'compressed'
+            // outputStyle: 'compressed'
 
         }))
         .pipe(plugins.autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(plugins.cssnano())
+        // .pipe(plugins.cssnano())
         .pipe(plugins.sourcemaps.write('.'))
         .pipe(gulp.dest(config.dist.css))
         .pipe(plugins.notify({ message: "Sass files successfully compiled.", onLast: true }))
@@ -85,6 +98,8 @@ gulp.task('scss', function() {
         }))
 });
 
+ 
+ 
 
 
 //html task 
@@ -102,12 +117,14 @@ gulp.task('scss', function() {
 
 gulp.task('nunjucks', function() {
     return gulp.src(config.src.root + '*.html')
+     .pipe(plugins.newer(config.dist.root+'*.html'))
         .pipe(plugins.plumber({ errorHandler: plugins.notify.onError("Error: <%= error.message %>") }))
         .pipe(render({
             path: [config.src.root]
         }))
-        .pipe(plugins.useref())
-        .pipe(plugins.if('*.js', plugins.uglify()))
+        // .pipe(plugins.useref())
+        // .pipe(plugins.if('*.js', plugins.uglify()))
+        // .pipe(plugins.versionNumber(versionConfig))
         .pipe(gulp.dest(config.dist.root))
         .pipe(plugins.notify({ message: "nunjucks files successfully compiled to html.", onLast: true }))
 
@@ -115,6 +132,7 @@ gulp.task('nunjucks', function() {
 
 gulp.task('imagemin', function() {
     return gulp.src(config.src.img + '**/*')
+         .pipe(plugins.newer(config.dist.img))
         .pipe(plugins.plumber({ errorHandler: plugins.notify.onError("Error: <%= error.message %>") }))
 
         .pipe(plugins.imagemin([
@@ -159,7 +177,7 @@ gulp.task('imagemin', function() {
 
 
 //browser sync
-gulp.task('serve', function() {
+gulp.task('serve',  function() {
     browserSync.init({
         server: {
             baseDir: config.dist.root
@@ -169,10 +187,10 @@ gulp.task('serve', function() {
 
 
     });
-    // gulp.watch(config.src.scss+'**/*.scss', ['scss']).on('change', reload);
-    gulp.watch([config.src.js + '**/*', 'nunjucks']).on('change', reload);
-    gulp.watch([config.src.img + '**/*', 'imagemin']).on('change', reload);
-    gulp.watch([config.src.root + '**/*.html', 'nunjucks']).on('change', reload);
+    gulp.watch(config.src.scss+'**/*.scss', ['scss']);
+    gulp.watch(config.src.js + '**/*', ['js']).on('change', reload);
+    gulp.watch(config.src.img + '**/*', ['imagemin']).on('change', reload);
+    gulp.watch(config.src.root + '**/*.html', ['nunjucks']).on('change', reload);
     // gulp.watch(config.src.data+'**/*', ['copydata']).on('change', reload);
 
 
@@ -211,13 +229,13 @@ function abc(event) {
 // watch files
 gulp.task('watch', ['serve'], function() {
     gulp.watch(config.src.scss + '**/*.scss', ['scss']);
-    gulp.watch(config.src.js + '**/*', ['nunjucks']).on('change', function(event) { abc(event) });
-    gulp.watch(config.src.img + '**/*', ['imagemin']).on('change', function(event) { abc(event) });
-    gulp.watch(config.src.root + '**/*.html', ['nunjucks']).on('change', function(event) { abc(event) });
+    gulp.watch(config.src.js + '**/*', ['js']).on('change', reload);
+    gulp.watch(config.src.img + '**/*', ['imagemin']).on('change', reload);
+    gulp.watch(config.src.root + '**/*.html', ['nunjucks']).on('change', reload);
 
 
 });
 
 gulp.task('default', ['clean:all'], function() {
-    runSequence('copyfont', 'copydata', 'copyjs', 'scss', 'nunjucks', 'imagemin', 'watch');
+    runSequence('copyfont', 'copydata', 'scss', 'js', 'nunjucks', 'imagemin',   'serve');
 });

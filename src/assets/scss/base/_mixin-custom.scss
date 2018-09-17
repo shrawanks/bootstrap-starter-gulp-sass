@@ -3,87 +3,87 @@
  
  // ratio thumbnail       
 
-@mixin responsive-ratio($x,$y, $pseudo: false) {
-    $padding: unquote( ( $y / $x ) * 100 + '%' );
-    @if $pseudo {
-        &:before {
-            @include pseudo($pos: relative);
-            width: 100%;
-            padding-top: $padding;
-        }
-    } @else {
-        padding-top: $padding;
-    }
+ @mixin responsive-ratio($x,$y, $pseudo: false) {
+  $padding: unquote( ( $y / $x ) * 100 + '%' );
+  @if $pseudo {
+      &:before {
+          @include pseudo($pos: relative);
+          width: 100%;
+          padding-top: $padding;
+      }
+  } @else {
+      padding-top: $padding;
+  }
 }
 
- 
+
 //  div {
 //     @include responsive-ratio(16,9);
 // }
- 
 
 
 
 
 
- // triangle    
+
+// triangle    
 
 @mixin arrow ($direction, $size, $color) {
-	@if $direction == up {
-		border-left: $size solid transparent;
-		border-right: $size solid transparent;
-		border-bottom: $size solid $color;
-	} @else if $direction == down {
-		border-left: $size solid transparent;
-		border-right: $size solid transparent;
-		border-top: $size solid $color;
-	} @else if $direction == right {
-		border-top: $size solid transparent;
-		border-bottom: $size solid transparent;
-		border-left: $size solid $color;
-	} @else if $direction == left {
-		border-top: $size solid transparent;
-		border-bottom: $size solid transparent;
-		border-right:$size solid $color;
-	}
+@if $direction == up {
+  border-left: $size solid transparent;
+  border-right: $size solid transparent;
+  border-bottom: $size solid $color;
+} @else if $direction == down {
+  border-left: $size solid transparent;
+  border-right: $size solid transparent;
+  border-top: $size solid $color;
+} @else if $direction == right {
+  border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-left: $size solid $color;
+} @else if $direction == left {
+  border-top: $size solid transparent;
+  border-bottom: $size solid transparent;
+  border-right:$size solid $color;
 }
- 
+}
+
 //   .read-more { 
 // 		&:before {
 // 			@include arrow (right, 3px, black);
 // 		}
 // }
- 
 
 
- 
+
+
 // margin padding top, right, bottom left   
- 
- 
+
+
 
 @mixin spacer($properties, $axis, $value){
-	@if $axis==x {
-		#{$properties}-left:$value;
-		#{$properties}-right:$value;
-	}
-	@else if $axis==y {
-		#{$properties}-top:$value;
-		#{$properties}-bottom:$value;
-	}
-	 
+@if $axis==x {
+  #{$properties}-left:$value;
+  #{$properties}-right:$value;
+}
+@else if $axis==y {
+  #{$properties}-top:$value;
+  #{$properties}-bottom:$value;
 }
  
+}
 
- //example
- // .class {
- // 	@include spacer(padding, x, 15px)
- // }
+
+//example
+// .class {
+// 	@include spacer(padding, x, 15px)
+// }
 
 //before and after mixin 
 @mixin pseudo($display: block, $pos: absolute, $content: ''){
-    content: $content;
-    display: $display;
-    position: $pos;
+  content: $content;
+  display: $display;
+  position: $pos;
 }
 
 // example
@@ -97,40 +97,40 @@
 
 //position mixin
 @mixin position($position, $args: ()) {
-  $offsets: top right bottom left;
-  position: $position;
+$offsets: top right bottom left;
+position: $position;
 
-  @each $offset in $offsets {
-     $index: index($args, $offset);
+@each $offset in $offsets {
+   $index: index($args, $offset);
 
 // If offset is found in the list
 @if $index {
-  // If it is found at last position
-  @if $index == length($args) {
+// If it is found at last position
+@if $index == length($args) {
+  #{$offset}: 0;
+}
+
+// If it is followed by a value
+@else {
+  $next: nth($args, $index + 1);
+
+  // If the next value is value length
+  @if is-valid-length($next) {
+    #{$offset}: $next;
+  }
+
+  // If the next value is another offset
+  @else if index($offsets, $next) {
     #{$offset}: 0;
   }
 
-  // If it is followed by a value
+  // If it is invalid
   @else {
-    $next: nth($args, $index + 1);
-
-    // If the next value is value length
-    @if is-valid-length($next) {
-      #{$offset}: $next;
-    }
-
-    // If the next value is another offset
-    @else if index($offsets, $next) {
-      #{$offset}: 0;
-    }
-
-    // If it is invalid
-    @else {
-      @warn "Invalid value `#{$next}` for offset `#{$offset}`.";
-    }
+    @warn "Invalid value `#{$next}` for offset `#{$offset}`.";
   }
 }
-  }
+}
+}
 }
 
 // Function checking if $value is a valid length
@@ -140,21 +140,21 @@
 // @return [bool]
 
 @function is-valid-length($value) {
-  @return (type-of($value) == "number" and not unitless($value)) 
-       or (index(auto initial inherit 0, $value) != false);
+@return (type-of($value) == "number" and not unitless($value)) 
+     or (index(auto initial inherit 0, $value) != false);
 }
- 
+
 
 @mixin absolute($args: ()) {
-  @include position(absolute, $args);
+@include position(absolute, $args);
 }
 
 @mixin fixed($args: ()) {
-  @include position(fixed, $args);
+@include position(fixed, $args);
 }
 
 @mixin relative($args: ()) {
-  @include position(relative, $args);
+@include position(relative, $args);
 }
 
 // example 
@@ -231,18 +231,18 @@
 
 
 @mixin placeholder-color($color) {
-  &::-webkit-input-placeholder { /* WebKit browsers */
-      color: $color;
-  }
-  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-      color: $color;
-  }
-  &::-moz-placeholder { /* Mozilla Firefox 19+ */
-      color: $color;
-  }
-  &:-ms-input-placeholder { /* Internet Explorer 10+ */
-      color: $color;
-  }
+&::-webkit-input-placeholder { /* WebKit browsers */
+    color: $color;
+}
+&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: $color;
+}
+&::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: $color;
+}
+&:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: $color;
+}
 }
 
 
@@ -250,8 +250,8 @@
 //photoshop line height convert to css
 @mixin line-height($fontsize, $lineheight ){
 
-     line-height:$lineheight/$fontsize;
-      margin-top: (($lineheight - $fontsize)/2 * -1) + px;
+   line-height:$lineheight/$fontsize;
+    margin-top: (($lineheight - $fontsize)/2 * -1) + px;
 }
 //example:
 //@include line-height(22,30);
@@ -259,5 +259,125 @@
 
 //photoshop letterspacing convert to css
 @mixin letter-spacing($letterspacing) {
-    letter-spacing: ($letterspacing/1000) * 1em;
+  letter-spacing: ($letterspacing/1000) * 1em;
+}
+
+
+//usage: @include transition([property],[duration],[easing]);
+@mixin transition($property: all, $duration: .3s, $ease: linear, $delay: 0s){
+-webkit-transition: $property $duration $ease $delay;
+-moz-transition: $property $duration $ease $delay;
+-o-transition: $property $duration $ease $delay;
+transition: $property $duration $ease $delay;
+}
+
+// Webkit appearance
+@mixin x-appearance ($value) {
+-webkit-appearance: $value;
+   -moz-appearance: $value;
+        appearance: $value;
+}
+
+// generic transform
+@mixin transform($transforms) {
+   -moz-transform: $transforms;
+     -o-transform: $transforms;
+    -ms-transform: $transforms;
+-webkit-transform: $transforms;
+        transform: $transforms;
+}
+
+// border radius
+@mixin border-radius($value) {
+   -moz-border-radius: $value;
+     -o-border-radius: $value;
+    -ms-border-radius: $value;
+-webkit-border-radius: $value;
+        border-radius: $value;
+}
+
+// Blur
+@mixin blur($value) {
+   -webkit-filter: blur($value);
+      -moz-filter: blur($value);
+      -ms-filter: blur($value);
+      -o-filter: blur($value);
+      filter: blur($value);
+}
+// rotate
+@mixin rotate ($deg) {
+@include transform(rotate(#{$deg}deg));
+}
+
+// scale
+@mixin scale($scale) {
+ @include transform(scale($scale));
+} 
+// translate
+@mixin translate ($x, $y) {
+ @include transform(translate($x, $y));
+}
+// skew
+@mixin skew ($x, $y) {
+ @include transform(skew(#{$x}deg, #{$y}deg));
+}
+//transform origin
+@mixin transform-origin ($origin) {
+  moz-transform-origin: $origin;
+     -o-transform-origin: $origin;
+    -ms-transform-origin: $origin;
+-webkit-transform-origin: $origin;
+        transform-origin: $origin;
+}
+
+
+
+// opacity mixin (use : @include Opacity(0))
+@mixin Opacity($value){
+$IEValue: $value*100;
+opacity: $value;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+$IEValue+")";
+filter: alpha(opacity=$IEValue);
+}
+
+
+// Custom linear gradient mixin
+@mixin gradient-custom($angle: 45deg, $start-color: $gray-700, $end-color: $gray-800, $opacity: 5) {
+background-image: linear-gradient($angle, rgba($start-color, $opacity) 0%, rgba($end-color, $opacity) 100%);
+background-repeat: repeat-x;
+}
+
+
+@mixin customscrollbar($size : 6px, $trackcolor : none, $thumbcolor : $gray-500, $thumbhovercolor: $gray-700) {
+&::-webkit-scrollbar {
+  width: $size;
+  height: $size;
+}
+
+// Track
+&::-webkit-scrollbar-track {
+  background: $trackcolor; 
+}
+
+// Handle
+&::-webkit-scrollbar-thumb {
+  background: $thumbcolor; 
+  border-radius: 5px;
+}
+
+// Handle on hover
+&::-webkit-scrollbar-thumb:hover {
+  background: $thumbhovercolor; 
+}
+}
+
+@mixin dshadow($shdaowcolor : #999, $opacitys: 67%, $angles: 90, $distances: 6px, $spreads: 10, $sizes: 18px,  $is-text-shadows: true) {
+box-shadow: drop-shadow-converter(
+  $shdaowcolor, 
+  $opacity: $opacitys,
+  $angle: $angles, 
+  $distance: $distances, 
+  $spread: $spreads, 
+  $size: $sizes, 
+  $is-text-shadow: $is-text-shadows);
 }
